@@ -21,8 +21,8 @@ if uploaded:
 
     with tab1:
         edited = st.data_editor(
-            df[["Activity ID", "Activity Name", "Current %", "Activity Status", "Comments"]],
-            column_config={"Current %": st.column_config.NumberColumn(min_value=0, max_value=100, step=1)},
+            df[["Activity ID", "Activity Name", "Current % ↓↓↓", "Activity Status", "Comments"]],
+            column_config={"Current % ↓↓↓": st.column_config.NumberColumn(min_value=0, max_value=100, step=1),
             use_container_width=True,
         )
 

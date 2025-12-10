@@ -10,11 +10,8 @@ if file:
     df = pd.read_excel(file, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
-    # Fix the real column name in your file
-    if "Duration%Complete" in df.columns:
-        df["Current %"] = (df["Duration%Complete"] * 100).round(1)
-    else:
-        df["Current %"] = 0.0
+    # Fix P6 decimal % → real %
+    df["Current %"] = (df["Duration%Complete"] * 100).round(1)
 
     st.success(f"Loaded {len(df):,} activities")
 
@@ -33,7 +30,6 @@ if file:
     with tab3:
         output = BytesIO()
         export_df = df.copy()
-        if "Duration%Complete" in export_df.columns:
-            export_df["Duration%Complete"] = export_df["Current %"] / 100
+        export_df["Duration%Complete"] = export_df["Current %"] / 100
         export_df.to_excel(output, index=False)
         st.download_button("Download for P6 import", output.getvalue(), "P6_updated.xlsx")

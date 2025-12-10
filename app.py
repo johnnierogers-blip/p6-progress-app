@@ -7,7 +7,7 @@ st.title("P6 Progress Tracker — No More Excel")
 file = st.file_uploader("Upload your full P6 export (.xlsx)", type="xlsx")
 
 if file:
-    # Load P6 Dump sheet, skip first 4 rows
+    # Load P6 Dump, skip 4 rows (your file's structure)
     df = pd.read_excel(file, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
@@ -22,7 +22,7 @@ if file:
     tab1, tab2, tab3 = st.tabs(["PM Update", "Dashboard", "Export"])
 
     with tab1:
-        # Build column list safely
+        # Only show columns that exist in your file
         cols = ["Activity ID"]
         if "Activity Name " in df.columns:
             cols.append("Activity Name ")

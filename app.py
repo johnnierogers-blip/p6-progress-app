@@ -7,7 +7,6 @@ st.title("P6 Progress Tracker — No More Excel")
 file = st.file_uploader("Upload your full P6 export (.xlsx)", type="xlsx")
 
 if file:
-    # Load P6 Dump, skip 4 rows (your file)
     df = pd.read_excel(file, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
@@ -22,12 +21,8 @@ if file:
     tab1, tab2, tab3 = st.tabs(["PM Update", "Dashboard", "Export"])
 
     with tab1:
-        # Only use columns that 100% exist in your file
-        cols = ["Activity ID"]
-        if "Activity Name " in df.columns:  # your file has a space
-            cols.append("Activity Name ")
-        cols.append("Current %")
-
+        # Use only columns that definitely exist in your file
+        cols = ["Activity ID", "Activity Name", "Current %"]
         edited = st.data_editor(
             df[cols],
             column_config={"Current %": st.column_config.NumberColumn(min_value=0, max_value=100, step=1)},

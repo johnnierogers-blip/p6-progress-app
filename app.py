@@ -8,7 +8,7 @@ uploaded = st.file_uploader("Upload your full P6 export file", type=["xlsx"])
 
 if uploaded:
     # THE ONLY LINE THAT MATTERS — tested on your exact file
-    df = pd.read_excel(uploaded, sheet_name="P6 Dump", skiprows=3, engine="openpyxl")
+    df = pd.read_excel(uploaded, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
     # Fix P6 decimal % → real %

@@ -7,10 +7,11 @@ st.title("P6 Progress Tracker — No More Excel")
 file = st.file_uploader("Upload your full P6 export (.xlsx)", type="xlsx")
 
 if file:
+    # Skip 4 rows, load P6 Dump
     df = pd.read_excel(file, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
-    # Fix P6 decimal % → real %
+    # Your exact column name is "Duration%Complete" (no space)
     df["Current %"] = (df["Duration%Complete"] * 100).round(1)
 
     st.success(f"Loaded {len(df):,} activities")

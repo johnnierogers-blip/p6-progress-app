@@ -7,11 +7,11 @@ st.title("P6 Progress Tracker — No More Excel")
 file = st.file_uploader("Upload your full P6 export (.xlsx)", type="xlsx")
 
 if file:
-    # Load P6 Dump, skip 4 rows (your file's structure)
+    # Load P6 Dump, skip 4 rows
     df = pd.read_excel(file, sheet_name="P6 Dump", skiprows=4, engine="openpyxl")
     df = df.dropna(how="all").reset_index(drop=True)
 
-    # Fix P6 decimal % → real % (0.6991 → 69.9)
+    # Fix decimal % → real %
     if "Duration % Complete" in df.columns:
         df["Current %"] = (df["Duration % Complete"] * 100).round(1)
     else:
@@ -22,15 +22,19 @@ if file:
     tab1, tab2, tab3 = st.tabs(["PM Update", "Dashboard", "Export"])
 
     with tab1:
-        # Only show columns that exist in your file
+        # Only show columns that exist
         cols = ["Activity ID"]
         if "Activity Name " in df.columns:
             cols.append("Activity Name ")
         elif "Activity Name" in df.columns:
             cols.append("Activity Name")
         cols.append("Current %")
+
+        # Add Status only if it exists
         if "Activity Status" in df.columns:
             cols.append("Activity Status")
+        elif "Status" in df.columns:
+            cols.append("Status")
 
         edited = st.data_editor(
             df[cols],
